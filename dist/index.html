@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<title>WASM</title>
+<script>
+fetch("./bin/sqrt.wasm")
+  .then(res => res.arrayBuffer())
+  .then(bytes => WebAssembly.compile(bytes))
+  .then(module => WebAssembly.instantiate(module))
+  .then(instance => (window.wasmSqrt = instance.exports.sqrt))
+  .then(() => {
+    const num = wasmSqrt(5);
+    const $el = document.getElementById("output");
+    $el.innerHTML = num;
+  })
+  .catch(console.error);
+</script>
+</head>
+<body>
+  <div id="output"></div>
+</body>
+</html>
